@@ -2,16 +2,10 @@ import { useContext, useEffect, useState, useRef, useCallback, useMemo, useLayou
 import { UserContext } from 'App';
 import './chat.css';
 import { useNavigate } from 'react-router-dom';
-import { getContacts, getContactById, getContactMessages,nameUpdate } from 'constants/api/chat';
-import moment from 'moment/moment';
+import { getContacts, getContactById, getContactMessages, nameUpdate } from 'constants/api/chat';
 import { io } from 'socket.io-client';
-import { notifyError } from 'constants/functions';
-import ringtone from 'assets/ringtone.mp3';
 import './profile.css'
 
-import Uploady from "@rpldy/uploady";
-import UploadPreview from "@rpldy/upload-preview";
-import UploadButton from "@rpldy/upload-button";
 export default function Chat() {
     const { user, setUser } = useContext(UserContext);
     const navigate = useNavigate();
@@ -21,20 +15,20 @@ export default function Chat() {
 
 
 
-const handleNameUpdate = (event)=>{
-    setRegisterForm({
-        name: event.target.value
-    })
-}
-const handleUpdate = (event)=>{
-    nameUpdate(registerForm).then(data=>{
-        if(data?.user && data.user.token){
-            setUser(data.user)
-            // navigate('/profile')
-            return
-        }
-    })
-}
+    const handleNameUpdate = (event) => {
+        setRegisterForm({
+            name: event.target.value
+        })
+    }
+    const handleUpdate = (event) => {
+        nameUpdate(registerForm).then(data => {
+            if (data?.user && data.user.token) {
+                setUser(data.user)
+                // navigate('/profile')
+                return
+            }
+        })
+    }
 
     const handleProfile = () => {
         navigate('/profile')
@@ -50,7 +44,6 @@ const handleUpdate = (event)=>{
         socket.current?.disconnect();
         navigate('/auth/login')
     }
-    
     // For Reconnecting Socket on login and logout
     useLayoutEffect(() => {
         if (user && !socket.current?.connected) {
@@ -62,8 +55,11 @@ const handleUpdate = (event)=>{
         }
     }, []);
 
+    const [image, setImage] = useState()
+    const handleImage = (e) => {
+        setImage(e.target.files[0])
+    }
 
-  
 
     // Socket io Events
     useEffect(() => {
@@ -113,22 +109,14 @@ const handleUpdate = (event)=>{
                 <div className=" profile">
                     <h4 >Upload your profile photo</h4>
                     <div >
-                        <img className='photo-title' src="https://www.w3schools.com/howto/img_avatar.png" />
-                        <Uploady>
-
-                        </Uploady>
+                        {image ? <img className='photo-title' src={URL.createObjectURL(image)} alt="" /> : <img className='photo-title' src="https://www.w3schools.com/howto/img_avatar.png" />}
                     </div>
                     <p ><span class="me-1">{`Name: ${user?.name}`}</span></p>
                     <p ><span class="me-1">{`Email: ${user?.email}`}</span></p>
-                    <Uploady
-                        destination={{ url: "https://my-server/upload" }}>
-                        <UploadButton />
-                        <UploadPreview/>
-
-                    </Uploady>
-                    {/* <div>
-                        <input type="file" id="customFile" name="file" hidden="" />
-                    </div> */}
+                    <div>
+                        <input type="file" name="file" onChange={handleImage} />
+                        {/* <button>Submit</button> */}
+                    </div>
                     <p ><span class="me-1">Note:</span>Minimum size 300px x 300px</p>
 
                 </div>
@@ -136,10 +124,10 @@ const handleUpdate = (event)=>{
                 <form className='form-update' onSubmit={handleUpdate}>
                     <div style={{ marginRight: "10px" }}>
                         <label for="exampleInputEmail1">Name: </label>
-                        <input type="text" class="" id="exampleInputEmail1" placeholder={user?.name} onBlur={(e)=>handleNameUpdate(e)} />
+                        <input type="text" class="" id="exampleInputEmail1" placeholder={user?.name} onBlur={(e) => handleNameUpdate(e)} />
                     </div>
 
-                    <button type="submit"  class="btn btn-primary">Update</button>
+                    <button type="submit" class="btn btn-primary">Update</button>
 
                 </form>
             </div>
