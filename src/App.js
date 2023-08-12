@@ -1,9 +1,11 @@
 import React, { useState, createContext, useLayoutEffect} from 'react';
 import './App.css';
-import Auth from './pages/auth/auth';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import AuthMiddleware from './middlewares/auth';
 import GuestMiddleware from './middlewares/guest';
+import Auth from './pages/auth/auth';
+import Chat from 'pages/chat/chat';
 import {userFromToken} from './constants/api/auth'
 
 import {
@@ -30,14 +32,15 @@ function App() {
   }, []);
     return (
       <div className="App">
-        <BrowserRouter>
-          <Routes>
-            {/* <Route path='/chat' element={<AuthMiddleware> <Chat /> </AuthMiddleware>} /> */}
-            <Route path='*' element={ <GuestMiddleware><Auth /> </GuestMiddleware> } />
-           {/* <Auth />   */}
-          </Routes>
-        </BrowserRouter>
-        <ToastContainer />
+        <UserContext.Provider value={{ user, setUser }}>
+          <BrowserRouter>
+            <Routes>
+                <Route path='/chat' element={<AuthMiddleware> <Chat /> </AuthMiddleware>} />
+                <Route path='*' element={ <GuestMiddleware><Auth /> </GuestMiddleware> } />
+            </Routes>
+          </BrowserRouter>
+          <ToastContainer />
+        </UserContext.Provider>
       </div>
     );
   }

@@ -50,7 +50,7 @@ const Register = (props) => {
         <input onChange={onSignupChange} placeholder="Email.com" id="email" name="email" />
         <label htmlFor="password" >password</label>
         <input onChange={onSignupChange} type="password" placeholder="******" id="password" name="password" />
-        <button type='submit'>Register</button>
+        <button style={{marginTop: '20px'}} type='submit'>Register</button>
     </form>
     <button className='link-btn' onClick={()=> onFormSwitch('login')}>Already have an account? Login here</button>
   </div>

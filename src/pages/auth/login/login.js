@@ -46,7 +46,7 @@ const Login = (props) => {
         <input  onChange={handleLoginChange}  placeholder="Email.com" id="email" name="email" />
         <label htmlFor="password" >password</label>
         <input  onChange={ handleLoginChange} type="password" placeholder="******" id="password" name="password" />
-        <button type='submit'>Log In</button>
+        <button style={{marginTop: '20px'}} type='submit'>Log In</button>
       </form>
       <button className='link-btn' onClick={()=> onFormSwitch('register')}>Don't have an account? Register here</button>
     </div>
