@@ -115,19 +115,19 @@ export default function Chat() {
                     <div >
                         {image ? <img style={{maxHeight: "100px"}} src={URL.createObjectURL(image)} alt="" /> : <img style={{maxHeight: "100px"}} src="https://www.w3schools.com/howto/img_avatar.png" />}
                     </div>
-                    <p ><span class="me-1">{`Name: ${user?.name}`}</span></p>
-                    <p ><span class="me-1">{`Email: ${user?.email}`}</span></p>
+                    
+                    <p ><span class="me-1">Note:</span>Minimum size 300px x 300px</p>
                     <div>
                         <input ref={inputRef} style={{ display: 'none' }} type="file" name="file" onChange={handleImage} />
                         <button class="btn btn-primary" style={{fontSize: "12px"}} onClick={handleImageClick}>Upload Image</button>
                     </div>
-                    <p ><span class="me-1">Note:</span>Minimum size 300px x 300px</p>
-
+                    <p style={{fontWeight: "500"}}><span class="me-1">{`Name: ${user?.name}`}</span></p>
+                    <p style={{fontWeight: "500"}}><span class="me-1">{`Email: ${user?.email}`}</span></p>
                 </div>
                 <hr />
                 <form className='form-update' onSubmit={handleUpdate}>
                     <div style={{ marginRight: "10px" }}>
-                        <label for="exampleInputEmail1">Name: </label>
+                        <label style={{fontWeight: "500"}} for="exampleInputEmail1">Name:</label>
                         <input type="text" class="" id="exampleInputEmail1" placeholder={user?.name} onBlur={(e) => handleNameUpdate(e)} />
                     </div>
 
