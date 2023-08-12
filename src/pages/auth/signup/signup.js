@@ -1,10 +1,19 @@
 import React from 'react'
-import { useState } from 'react';
+import { useState,useContext } from 'react';
 import '../auth.css'
 import { notifyError } from '../../../constants/functions'
+import { useNavigate } from 'react-router-dom';
+import { register } from '../../../constants/api/auth'
+import { UserContext } from 'App';
+
+
+
+
 const Register = (props) => {
     const {onFormSwitch} = props
-    // const navigate = useNavigate();
+    const {user, setUser} = useContext(UserContext);
+
+    const navigate = useNavigate();
     const [registerForm, setRegisterForm] = useState({});
     const isValidEmail = (email) => /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)
 
@@ -21,14 +30,14 @@ const Register = (props) => {
         if(! isValidEmail(registerForm.email)){
             return notifyError('Please Enter Valid Email')
         }
-        // register(registerForm).then(data=>{
-        //     if(data?.user && data.user.token){
-        //         localStorage.setItem('user-token', data.user.token);
-        //         // setUser(data.user)
-        //         // navigate('/chat')
-        //         return
-        //     }
-        // })
+        register(registerForm).then(data=>{
+            if(data?.user && data.user.token){
+                localStorage.setItem('user-token', data.user.token);
+                setUser(data.user)
+                navigate('/chat')
+                return
+            }
+        })
     }
   return (
     <><div className='auth-form-container'>

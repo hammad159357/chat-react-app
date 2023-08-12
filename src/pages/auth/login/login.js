@@ -1,10 +1,17 @@
 import React from 'react'
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import '../auth.css'
 import { notifyError } from '../../../constants/functions'
 import { login } from '../../../constants/api/auth'
+import { useNavigate } from 'react-router-dom';
+import { UserContext } from 'App';
+
+
 const Login = (props) => {
   const {onFormSwitch} = props
+  const {user, setUser} = useContext(UserContext);
+  const navigate = useNavigate();
+
   const [loginForm, setLoginForm] = useState({});
   const isValidEmail = (email) => /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)
     const handleLoginChange = (e)=>{
@@ -20,14 +27,14 @@ const Login = (props) => {
       if(! isValidEmail(loginForm.email)){
           return notifyError('Please Enter Valid Email')
       }
-      // login(loginForm).then(data=>{
-      //     if(data?.user && data.user.token){
-      //         localStorage.setItem('user-token', data.user.token);
-      //         // setUser(data.user)
-      //         // navigate('/chat')
-      //         return
-      //     }
-      // })
+      login(loginForm).then(data=>{
+          if(data?.user && data.user.token){
+              localStorage.setItem('user-token', data.user.token);
+              setUser(data.user)
+              navigate('/chat')
+              return
+          }
+      })
   }
   return (
     <>
