@@ -4,7 +4,6 @@ import './chat.css';
 import { useNavigate } from 'react-router-dom';
 import { getContacts, getContactById, getContactMessages, nameUpdate } from 'constants/api/chat';
 import { io } from 'socket.io-client';
-import './profile.css'
 
 export default function Chat() {
     const { user, setUser } = useContext(UserContext);
@@ -127,8 +126,8 @@ export default function Chat() {
                 <hr />
                 <form className='form-update' onSubmit={handleUpdate}>
                     <div style={{ marginRight: "10px" }}>
-                        <label style={{fontWeight: "500"}} for="exampleInputEmail1">Name:</label>
-                        <input type="text" class="" id="exampleInputEmail1" placeholder={user?.name} onBlur={(e) => handleNameUpdate(e)} />
+                        <label style={{fontWeight: "500",marginRight:"10px"}} for="exampleInputEmail1">Name:</label>
+                        <input style={{border: "0.5px solid",lineHeight: "0px",padding:"6px"}} type="text" class="" id="exampleInputEmail1" placeholder={user?.name} onBlur={(e) => handleNameUpdate(e)} />
                     </div>
 
                     <button type="submit" style={{fontSize: "12px"}} class="btn btn-primary">Update Name</button>
