@@ -6,6 +6,7 @@ import AuthMiddleware from './middlewares/auth';
 import GuestMiddleware from './middlewares/guest';
 import Auth from './pages/auth/auth';
 import Chat from 'pages/chat/chat';
+import Profile from 'pages/chat/profile';
 import {userFromToken} from './constants/api/auth'
 
 import {
@@ -36,6 +37,7 @@ function App() {
           <BrowserRouter>
             <Routes>
                 <Route path='/chat' element={<AuthMiddleware> <Chat /> </AuthMiddleware>} />
+                <Route path='/profile' element={<AuthMiddleware><Profile /></AuthMiddleware>} />
                 <Route path='*' element={ <GuestMiddleware><Auth /> </GuestMiddleware> } />
             </Routes>
           </BrowserRouter>

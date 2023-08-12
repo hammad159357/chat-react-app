@@ -6,7 +6,8 @@ const endpoints = {
     userFromToken: baseUrl + '/auth/user',
     getContacts: baseUrl + '/chat/contacts',
     getContactById: baseUrl + '/chat/contact',
-    getContactMessages: baseUrl + '/chat/messages'
+    getContactMessages: baseUrl + '/chat/messages',
+    nameUpdate: baseUrl + '/auth/update'
 }
 
 export default endpoints

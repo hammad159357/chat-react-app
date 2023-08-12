@@ -72,3 +72,33 @@ export  const postRequest = (url, data=null) =>{
     });
   }
 
+  export const putRequest = (url, data = null) => {
+    return new Promise((resolve, reject) => {
+      const token = localStorage.getItem('user-token');
+      let headers = {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      };
+      if (token) {
+        headers['Authorization'] = "Bearer " + token;
+      }
+  
+      try {
+        fetch(url, {
+          method: "PUT", // Change method to PUT
+          mode: "cors",
+          headers,
+          body: JSON.stringify(data),
+        }).then((res) => {
+          res.json().then((data) => {
+            resolve(data);
+          });
+          return;
+        });
+      } catch (error) {
+        reject(error);
+        console.log("Error", error);
+      }
+    });
+  }
+  

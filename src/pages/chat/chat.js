@@ -34,7 +34,10 @@ export default function Chat(){
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
       }
 
+const handleProfile = ()=>{
+    navigate('/profile')
 
+}
     const logout = ()=>{
         localStorage.removeItem('user-token');
         setUser(null);
@@ -177,6 +180,9 @@ export default function Chat(){
                 <ul className="items">
                     <li className="item item-active">
                         <i className="fa fa-commenting" aria-hidden="true"></i>
+                    </li>
+                    <li className="item" onClick={handleProfile}>
+                        <i className="fa fa-user" aria-hidden="true"></i>
                     </li>
                     <li className="item" onClick={logout}>
                         <i className="fa fa-sign-out" aria-hidden="true"></i>

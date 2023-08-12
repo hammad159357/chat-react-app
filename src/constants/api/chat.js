@@ -1,4 +1,4 @@
-import { getRequest } from 'constants/functions';
+import { getRequest,putRequest } from 'constants/functions';
 import {postRequest, notifyError, notifySuccess}  from 'constants/functions'
 import endpoints from 'constants/utils'
 
@@ -38,4 +38,20 @@ export const getContactById = async (id)=>{
         // notifyError(e.toString());
     }
 
+}
+export const nameUpdate = async (token)=>{
+    const url = endpoints.nameUpdate
+    try{
+
+        let response = await putRequest(url, {token})
+        if(response.success){
+            return response.data
+        }
+        notifyError(response?.message)
+        return response?.data
+    }catch(e){
+        notifyError(e?.toString())
+        return null
+    }
+    
 }
