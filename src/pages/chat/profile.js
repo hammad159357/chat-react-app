@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState, useRef, useCallback, useMemo, useLayoutEffect } from 'react';
+import { useContext, useEffect, useState, useRef, useCallback, useMemo, useLayoutEffect, useRe } from 'react';
 import { UserContext } from 'App';
 import './chat.css';
 import { useNavigate } from 'react-router-dom';
@@ -10,8 +10,10 @@ export default function Chat() {
     const { user, setUser } = useContext(UserContext);
     const navigate = useNavigate();
     const socket = useRef(null);
+    const inputRef = useRef(null)
     const [isConnected, setIsConnected] = useState(socket?.connected);
     const [registerForm, setRegisterForm] = useState({});
+    const [image, setImage] = useState()
 
 
 
@@ -55,12 +57,14 @@ export default function Chat() {
         }
     }, []);
 
-    const [image, setImage] = useState()
     const handleImage = (e) => {
         setImage(e.target.files[0])
     }
+    const handleImageClick = (e) => {
+        inputRef.current.click()
 
 
+    }
     // Socket io Events
     useEffect(() => {
         if (socket.current) {
@@ -106,16 +110,16 @@ export default function Chat() {
                     </nav>
 
                 </div>
-                <div className=" profile">
+                <div className="profile">
                     <h4 >Upload your profile photo</h4>
                     <div >
-                        {image ? <img className='photo-title' src={URL.createObjectURL(image)} alt="" /> : <img className='photo-title' src="https://www.w3schools.com/howto/img_avatar.png" />}
+                        {image ? <img style={{maxHeight: "100px"}} src={URL.createObjectURL(image)} alt="" /> : <img style={{maxHeight: "100px"}} src="https://www.w3schools.com/howto/img_avatar.png" />}
                     </div>
                     <p ><span class="me-1">{`Name: ${user?.name}`}</span></p>
                     <p ><span class="me-1">{`Email: ${user?.email}`}</span></p>
                     <div>
-                        <input type="file" name="file" onChange={handleImage} />
-                        {/* <button>Submit</button> */}
+                        <input ref={inputRef} style={{ display: 'none' }} type="file" name="file" onChange={handleImage} />
+                        <button class="btn btn-primary" style={{fontSize: "12px"}} onClick={handleImageClick}>Upload Image</button>
                     </div>
                     <p ><span class="me-1">Note:</span>Minimum size 300px x 300px</p>
 
@@ -127,7 +131,7 @@ export default function Chat() {
                         <input type="text" class="" id="exampleInputEmail1" placeholder={user?.name} onBlur={(e) => handleNameUpdate(e)} />
                     </div>
 
-                    <button type="submit" class="btn btn-primary">Update</button>
+                    <button type="submit" style={{fontSize: "12px"}} class="btn btn-primary">Update Name</button>
 
                 </form>
             </div>
