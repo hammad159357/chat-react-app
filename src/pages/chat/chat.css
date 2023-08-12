@@ -4,7 +4,9 @@
 
 body {
     /* padding: 5%; */
-    background-color: #F5F5F5;
+    /* background-color: #F5F5F5; */
+  background-image: linear-gradient(79deg, #7439db, #C66FBC 48%, #F7944D);
+
   }
   
   .container-white {

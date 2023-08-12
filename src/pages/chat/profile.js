@@ -17,9 +17,7 @@ export default function Chat() {
     const navigate = useNavigate();
     const socket = useRef(null);
     const [isConnected, setIsConnected] = useState(socket?.connected);
-    const [registerForm, setRegisterForm] = useState({
-        name: user?.name
-    });
+    const [registerForm, setRegisterForm] = useState({});
 
 
 
