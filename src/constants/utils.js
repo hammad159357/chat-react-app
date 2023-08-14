@@ -7,7 +7,8 @@ const endpoints = {
     getContacts: baseUrl + '/chat/contacts',
     getContactById: baseUrl + '/chat/contact',
     getContactMessages: baseUrl + '/chat/messages',
-    nameUpdate: baseUrl + '/auth/update'
+    nameUpdate: baseUrl + '/auth/update',
+    uploadImage: baseUrl + '/auth/upload-image',
 }
 
 export default endpoints

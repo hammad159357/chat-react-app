@@ -101,4 +101,33 @@ export  const postRequest = (url, data=null) =>{
       }
     });
   }
+export const imageRequest = (url, data) => {
+    
+    return new Promise((resolve, reject) => {
+      const token = localStorage.getItem('user-token');
+      let headers = {
+        // "Content-Type": "multipart/form-data",
+        Accept: "application/json",
+      };
+      if (token) {
+        headers['Authorization'] = "Bearer " + token;
+      }
   
+      try {
+        fetch(url, {
+          method: "PUT", 
+          mode: "cors",
+          headers,
+          body: data
+        }).then((res) => {
+          res.json().then((data) => {
+            resolve(data);
+          });
+          return;
+        });
+      } catch (error) {
+        reject(error);
+        console.log("Error", error);
+      }
+    });
+};

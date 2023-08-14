@@ -201,7 +201,7 @@ const handleProfile = ()=>{
                 {
                     filteredContacts.map(c=>(
                         <div key={c._id} onClick={()=> setSelectedContact(c)} className={c._id==selectedContact?._id ? "discussion message-active" : "discussion"}>
-                            <div className="photo" style={{ backgroundImage: "url('https://www.w3schools.com/howto/img_avatar.png')" }}>
+                            <div className="photo" style={{ backgroundImage: c.profileImage ? `url("http://localhost:3000/${c.profileImage}")` : "url('https://www.w3schools.com/howto/img_avatar.png')"}}>
                             <div className="online"></div>
                             </div>
                             <div className="desc-contact">

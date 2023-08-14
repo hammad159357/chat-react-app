@@ -2,7 +2,7 @@ import { useContext, useEffect, useState, useRef, useCallback, useMemo, useLayou
 import { UserContext } from 'App';
 import './chat.css';
 import { useNavigate } from 'react-router-dom';
-import { getContacts, getContactById, getContactMessages, nameUpdate } from 'constants/api/chat';
+import { getContacts, getContactById, getContactMessages, nameUpdate, uploadImage } from 'constants/api/chat';
 import { io } from 'socket.io-client';
 
 export default function Chat() {
@@ -12,10 +12,10 @@ export default function Chat() {
     const inputRef = useRef(null)
     const [isConnected, setIsConnected] = useState(socket?.connected);
     const [registerForm, setRegisterForm] = useState({});
-    const [image, setImage] = useState()
-
-
-
+    const local = 'http://localhost:3000/'
+    const apiImage = local + user?.profileImage
+    const [image, setImage] = useState(user?.profileImage ? apiImage : null)
+    const [staticImage, setStaticImage] = useState(null)
     const handleNameUpdate = (event) => {
         setRegisterForm({
             name: event.target.value
@@ -57,12 +57,23 @@ export default function Chat() {
     }, []);
 
     const handleImage = (e) => {
-        setImage(e.target.files[0])
+        // setImage(e.target.files[0])
+
+        if (!e.target) return
+        setStaticImage(e.target.files[0])
     }
     const handleImageClick = (e) => {
-        inputRef.current.click()
+        // inputRef.current.click()
+        if (!staticImage) return
+        const formData = new FormData();
+        formData.append("image", staticImage)
+
+        uploadImage(formData).then(data => {
+            setImage(local + data)
+            setStaticImage(null)
 
 
+        })
     }
     // Socket io Events
     useEffect(() => {
@@ -112,25 +123,25 @@ export default function Chat() {
                 <div className="profile">
                     <h4 >Upload your profile photo</h4>
                     <div >
-                        {image ? <img style={{maxHeight: "100px"}} src={URL.createObjectURL(image)} alt="" /> : <img style={{maxHeight: "100px"}} src="https://www.w3schools.com/howto/img_avatar.png" />}
-                    </div>
-                    
-                    <p ><span class="me-1">Note:</span>Minimum size 300px x 300px</p>
-                    <div>
-                        <input ref={inputRef} style={{ display: 'none' }} type="file" name="file" onChange={handleImage} />
-                        <button class="btn btn-primary" style={{fontSize: "12px"}} onClick={handleImageClick}>Upload Image</button>
-                    </div>
-                    <p style={{fontWeight: "500"}}><span class="me-1">{`Name: ${user?.name}`}</span></p>
-                    <p style={{fontWeight: "500"}}><span class="me-1">{`Email: ${user?.email}`}</span></p>
-                </div>
-                <hr />
-                <form className='form-update' onSubmit={handleUpdate}>
-                    <div style={{ marginRight: "10px" }}>
-                        <label style={{fontWeight: "500",marginRight:"10px"}} for="exampleInputEmail1">Name:</label>
-                        <input style={{border: "0.5px solid",lineHeight: "0px",padding:"6px"}} type="text" class="" id="exampleInputEmail1" placeholder={user?.name} onBlur={(e) => handleNameUpdate(e)} />
+                        {image ? <img style={{ maxHeight: "150px", borderRadius: "50%", maxWidth: "150px"  }} src={image} alt="aaa" /> : <img style={{ maxHeight: "150px", borderRadius: "50%", maxWidth: "150px"}} src="https://www.w3schools.com/howto/img_avatar.png" />}
                     </div>
 
-                    <button type="submit" style={{fontSize: "12px"}} class="btn btn-primary">Update Name</button>
+                    <p ><span className="me-1">Note:</span>Minimum size 300px x 300px</p>
+                    <div>
+                        <input type="file" name="file" onChange={handleImage} />
+                        <button disabled={!staticImage ? true : false} className="btn btn-primary" style={{ fontSize: "12px" }} onClick={handleImageClick}>Upload Image</button>
+                    </div>
+                    <p style={{ fontWeight: "500" }}><span className="me-1">{`Name: ${user?.name}`}</span></p>
+                    <p style={{ fontWeight: "500" }}><span className="me-1">{`Email: ${user?.email}`}</span></p>
+                </div>
+                <hr />
+                <form action="/profile" className='form-update' onSubmit={handleUpdate}>
+                    <div style={{ marginRight: "10px" }}>
+                        <label style={{ fontWeight: "500", marginRight: "10px" }} htmlFor="exampleInputEmail1">Name:</label>
+                        <input style={{ border: "0.5px solid", lineHeight: "0px", padding: "6px" }} type="text" id="exampleInputEmail1" placeholder={user?.name} onBlur={(e) => handleNameUpdate(e)} />
+                    </div>
+
+                    <button type="submit" style={{ fontSize: "12px" }} className="btn btn-primary">Update Name</button>
 
                 </form>
             </div>
